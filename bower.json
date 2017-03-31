@@ -1,0 +1,21 @@
+{
+  "name": "Ask-Survey",
+  "description": "",
+  "main": "server.js",
+  "authors": [
+    "Seth"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/SethKaminski/Ask-Survey",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/scripts/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
