@@ -40,4 +40,9 @@ router.get('/do/:id', (req, res, next) => {
   }
 );
 
+router.post('/do/:id', (req, res, next) => {
+    indexController.ProcessSurvey(req, res);
+  }
+);
+
 module.exports = router;

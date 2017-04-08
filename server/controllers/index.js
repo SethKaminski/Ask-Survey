@@ -1,5 +1,7 @@
 let mongoose = require('mongoose');
-let type1 = require('../models/surveytype1');
+let surveytype1 = require('../models/surveytype1');
+let answertype1 = require('../models/answertype1');
+
 
 module.exports.DisplayHome = (req, res)  => {
     res.render('content/index', { 
@@ -21,7 +23,7 @@ module.exports.ProcessCreat = (req, res)  => {
 }
 
 module.exports.DisplaySurveys = (req, res)  => {
-    type1.find((err, surveys) => {
+    surveytype1.find((err, surveys) => {
         if (err) {
             return console.error(err);
         } else {
@@ -35,7 +37,7 @@ module.exports.DisplaySurveys = (req, res)  => {
 }
 
 module.exports.ProcessType1 = (req, res)  => {
-    let newType1 = new type1({
+    let newType1 = new surveytype1({
         "user_id": "String",
         "user_name": "String",
         "name": req.body.surveyName,
@@ -77,7 +79,7 @@ module.exports.ProcessType1 = (req, res)  => {
             },
     });
 
-    type1.create(newType1, (err) => {
+    surveytype1.create(newType1, (err) => {
         if (err) {
             console.error(err);
             res.end(error);
@@ -90,7 +92,7 @@ module.exports.ProcessType1 = (req, res)  => {
 module.exports.DisplaySurvey = (req, res)  => {
     let id = req.params.id;
 
-    type1.findById(id, (err, survey) => {
+    surveytype1.findById(id, (err, survey) => {
         if (err) {
             console.error(err);
             res.end(error);
@@ -99,6 +101,58 @@ module.exports.DisplaySurvey = (req, res)  => {
                 title: 'Survey ' + survey.name,
                 survey: survey,
                 username: req.user ? req.user.username : '' });
+        }
+    });
+}
+
+module.exports.ProcessSurvey = (req, res)  => {
+    let id = req.params.id;
+
+  
+
+    answertype1.findById(id, (err, answer) => {
+        if (err) {
+            console.error(err);
+            res.end(error);
+        } else if (answer == null) {
+            let newType1 = new answertype1({
+                "_id": id,
+                "q1answer": ['0','0','0','0'],
+                "q2answer": ['0','0','0','0'],
+                "q3answer": ['0','0','0','0'],
+                "q4answer": ['0','0','0','0'],
+                "q5answer": ['0','0','0','0']
+            });
+
+            newType1.q1answer[req.body.q1 -1] = 1;
+            newType1.q3answer[req.body.q2 -1] = 1;
+            newType1.q4answer[req.body.q3 -1] = 1;
+            newType1.q5answer[req.body.q4 -1] = 1;
+            newType1.q2answer[req.body.q5 -1] = 1;
+
+            answertype1.create(newType1, (err) => {
+                if (err) {
+                    console.error(err);
+                    res.end(error);
+                } else {
+                    res.redirect('/')
+                }
+            });
+        } else {
+            answer.q1answer[req.body.q1 -1]++;
+            answer.q3answer[req.body.q2 -1]++;
+            answer.q4answer[req.body.q3 -1]++;
+            answer.q5answer[req.body.q4 -1]++;
+            answer.q2answer[req.body.q5 -1]++;
+
+            answertype1.update({_id: id}, answer, (err) => {
+                if (err) {
+                    console.error(err);
+                    res.end(error);
+                } else {
+                   res.redirect('/');
+                }
+            });
         }
     });
 }
