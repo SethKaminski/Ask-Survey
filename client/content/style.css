@@ -2,7 +2,99 @@ body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
-
+#footer{
+    position: absolute;
+    bottom: 0;
+    width: 95%; 
+}
 a {
   color: #00B7FF;
+}
+/*Header*/
+#askImage{
+  width: 5%;
+}
+#navbar{
+  margin-bottom: 6px;
+}
+/*Homepage*/
+#panelBody{
+  padding: 0px;
+}
+#askTitle{
+  color: #6666ff;
+  font-weight: bold;
+  padding-top: 3px;
+}
+.active{
+  font-size: larger;
+  font-weight: bold;
+}
+#homePageBody{
+  background-color: #3388a3;
+  padding: 0px;
+  width: 100%;
+  color: #FFFFFF;
+}
+#welcomeText{
+  margin-left: 37%;
+}
+#welcomeSubText{
+  margin-left: 25%;
+}
+#ctaBox1{
+  width: 18%;
+  margin-left: 21%;
+  border-right-style: groove;
+}
+#ctaBox2{
+  width: 18%;
+  border-right-style: groove;
+  padding-left: 3%;
+}
+#ctaBox3{
+  width: 21%;
+  border-right-style: groove;
+  padding-left: 4%;
+}
+#ctaLink{
+    background-color: #009933;
+    padding: 5px;
+    border-radius: 10%;
+    color: #FFFFFF;
+    margin-left: 35%;
+}
+#ctaText{
+  font-size: larger;
+}
+/*Create Page*/
+#surveyText{
+  margin-left: 29%;
+}
+#surveySubText{
+  margin-left: 31%;
+}
+#surveyCTA{
+    background-color: #f2f2f2;
+    border-radius: 25px;
+    height: 145px;
+    width: 20%;
+    margin-left: 10px;
+    margin-top: 25px;
+}
+#surveyName{
+    font-weight: bold;
+    font-size: medium;
+    color: #ab342c;
+    margin-top: 10px;
+
+}
+#surveyNameBox{
+  margin-left: 10px;
+  color: black;
+}
+#surveyTypeText{
+    font-weight: bold;
+    font-size: medium;
+    color: #ab342c;
 }

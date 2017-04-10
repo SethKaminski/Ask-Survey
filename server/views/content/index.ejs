@@ -1,10 +1,23 @@
 <% include ../partials/header.ejs %>
-        <div class="panel-body">
+        <div class="panel-body"  id="panelBody">
           <div class="col-md-2"></div>
-          <div class="col-md-8">
-            &nbsp&nbsp&nbspLorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id mauris vitae nisi sollicitudin accumsan. Nunc non sem egestas urna cursus porttitor in vitae elit. Praesent id convallis arcu. Vivamus maximus venenatis mollis. Morbi elementum magna a interdum aliquam. Integer nec sollicitudin est, et efficitur lectus. Nam porta gravida cursus.
-
-            Sed posuere leo quis velit pulvinar tincidunt. Aliquam nec neque ac turpis ultricies consectetur. Praesent sollicitudin turpis et felis dapibus ultricies. Suspendisse viverra, leo eget aliquam volutpat, nisi augue feugiat lectus, in malesuada purus nisl et risus. Aenean sit amet eleifend nisl, sed cursus quam. Fusce vehicula felis ligula. Quisque posuere lectus pellentesque tincidunt volutpat. Aenean sed lectus nunc. Nulla ultrices congue facilisis. Duis sit amet nunc ultricies tortor imperdiet tristique non venenatis diam.
+          <div class="col-md-8" id="homePageBody">
+          <h1 id="welcomeText">Welcome to Ask Survey!</h1>
+          <h3 id="welcomeSubText">This is the best place on the internet to create a customized survery just for you.</h3>
           </div>
+        </div>
+        <div class="panel-body">
+        <div class="col-md-4" id="ctaBox1">
+        <p id="ctaText">Create a beautifully awesome survey</p>
+        <a href="/creat" id="ctaLink">Create</a>
+        </div>
+        <div class="col-md-4" id="ctaBox2">
+        <p id="ctaText">Register as a new user here!</p>
+        <a href="/user/register" id="ctaLink">Register</a>
+        </div>
+        <div class="col-md-4" id="ctaBox3">
+        <p id="ctaText">Already a user? Click below to login</p>
+        <a href="/user/login" id="ctaLink">Login</a>
+        </div>
         </div>
 <% include ../partials/footer.ejs %> 
