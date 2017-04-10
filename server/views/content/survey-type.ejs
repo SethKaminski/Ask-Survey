@@ -1,10 +1,14 @@
 <% include ../partials/header.ejs %>
-        <div class="panel-body">
-          <div class="col-md-2"></div>
-          <div class="col-md-8">
+        <div class="panel-body" id="panelBody">
+        <div class="col-md-8" id="homePageBody">
+          <h1 id="surveyText">You're on your way to create a new survey!</h1>
+          <h3 id="surveySubText">This is where you select what type of survey you would like</h3>
+          </div>
+        </div>         
+          <div class="col-md-8" id="surveyCTA">
             <form method="POST">
-              Survey name: <input type="text" name="surveyName"><br>
-              pick type
+              <p id="surveyName">Survey name:<input type="text" name="surveyName" id="surveyNameBox"></p><br> 
+              <p id="surveyTypeText">Please select the type of survey you would like create:</p>
               <input type="submit" name="a" value="1">
               <input type="submit" name="b" value="2">
             </form>

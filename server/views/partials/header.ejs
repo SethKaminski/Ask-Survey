@@ -11,21 +11,19 @@
 <body>
     <div class="panel">
         <div class="panel-heading">
-            <h1>Ask-Survey</h1>
+
         </div>
 
-        <nav class="navbar navbar-inverse">
+        <nav class="navbar navbar" id="navbar">
             <div class="container-fluid">
-                <ul class="nav navbar-nav">
-                    <li 
+                <img src="../../content/images/askLogo.png" alt="Ask Servey Logo" id="askImage">
+                <ul class="nav navbar-nav navbar-right"> 
+                <li 
                         <% if(title == "Home") { %> class="active" <% } %>
                     ><a href="/">Home</a></li>
                     <li 
                         <% if(title == "Creat") { %> class="active" <% } %>
-                    ><a href="/creat">Creat</a></li>                      
-
-                </ul>
-                <ul class="nav navbar-nav navbar-right">    
+                    ><a href="/creat">Create</a></li>    
                     <% if(username) { %>
                         <li class="navbar-text"> Welcome, <%= username %></li>
                         <li><a href="/user/logout"><span class="glyphicon glyphicon-log-out"></span> Logout </a></li>
