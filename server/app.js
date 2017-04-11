@@ -46,7 +46,7 @@ app.use(express.static(path.join(__dirname, '../client')));
 app.use(session({
   secret: 'SomeSecret',
   saveUninitialized: true,
-  resave: true
+  resave: true,
 }));
 
 //passport and flash setup
@@ -63,7 +63,6 @@ let User = UserModel.User;
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

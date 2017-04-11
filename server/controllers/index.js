@@ -2,6 +2,8 @@ let mongoose = require('mongoose');
 let surveytype1 = require('../models/surveytype1');
 let answertype1 = require('../models/answertype1');
 
+let survey = require('../models/survey');
+
 
 module.exports.DisplayHome = (req, res)  => {
     res.render('content/index', { 
@@ -155,4 +157,45 @@ module.exports.ProcessSurvey = (req, res)  => {
             });
         }
     });
+}
+
+module.exports.DisplayCreatSurvey = (req, res)  => {
+    let sess = req.session;
+    sess.survey = new survey({
+        "user_id": String,
+        "user_name": String,
+        "name": String,
+        "questions": [] 
+    });
+
+    res.render('content/creatsurvey', { 
+        title: 'Test',
+        survey: "",
+        username: req.user ? req.user.username : '' });
+}
+
+module.exports.ProcessCreatSurvey = (req, res)  => {
+    let sess = req.session;
+
+    if (sess.survey == null){
+        res.redirect('/creatsurvey');
+    } else {
+        console.log(sess.survey);
+        if (sess.survey.questions === null){
+            sess.survey.questions = [{}];
+        }
+
+        if (req.body.submitbutton == "Multiple Choice"){
+            sess.survey.questions.push({
+                "type":  "mc",
+                question: "",
+                Options: ["", "", "", ""]
+            });
+        }
+    }
+
+    res.render('content/creatsurvey', { 
+        title: 'Test',
+        survey: sess.survey,
+        username: req.user ? req.user.username : '' });
 }
