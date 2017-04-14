@@ -46,13 +46,13 @@ router.post('/do/:id', (req, res, next) => {
   }
 );
 
-router.get('/creatsurvey', (req, res, next) => {
-    indexController.DisplayCreatSurvey(req, res);
+router.get('/createsurvey', (req, res, next) => {
+    indexController.DisplayCreateSurvey(req, res);
   }
 );
 
-router.post('/creatsurvey', (req, res, next) => {
-    indexController.ProcessCreatSurvey(req, res);
+router.post('/createsurvey', (req, res, next) => {
+    indexController.ProcessCreateSurvey(req, res);
   }
 );
 

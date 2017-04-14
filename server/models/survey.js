@@ -6,9 +6,9 @@ let SurveySchema = mongoose.Schema({
   user_name: String,
   name: String,
   questions: [{ 
-      type: String,
+      category: String,
       question: String,
-      Options: [String]
+      options: [String]
     }]
 },
 {

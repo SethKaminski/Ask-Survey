@@ -25,7 +25,7 @@ module.exports.ProcessCreat = (req, res)  => {
 }
 
 module.exports.DisplaySurveys = (req, res)  => {
-    surveytype1.find((err, surveys) => {
+    survey.find((err, surveys) => {
         if (err) {
             return console.error(err);
         } else {
@@ -159,43 +159,90 @@ module.exports.ProcessSurvey = (req, res)  => {
     });
 }
 
-module.exports.DisplayCreatSurvey = (req, res)  => {
+module.exports.DisplayCreateSurvey = (req, res)  => {
     let sess = req.session;
     sess.survey = new survey({
-        "user_id": String,
-        "user_name": String,
-        "name": String,
+        "user_id": 'String',
+        "user_name": 'String',
+        "name": '',
         "questions": [] 
     });
 
-    res.render('content/creatsurvey', { 
-        title: 'Test',
-        survey: "",
-        username: req.user ? req.user.username : '' });
-}
+    console.log(sess.survey);
 
-module.exports.ProcessCreatSurvey = (req, res)  => {
-    let sess = req.session;
-
-    if (sess.survey == null){
-        res.redirect('/creatsurvey');
-    } else {
-        console.log(sess.survey);
-        if (sess.survey.questions === null){
-            sess.survey.questions = [{}];
-        }
-
-        if (req.body.submitbutton == "Multiple Choice"){
-            sess.survey.questions.push({
-                "type":  "mc",
-                question: "",
-                Options: ["", "", "", ""]
-            });
-        }
-    }
-
-    res.render('content/creatsurvey', { 
+    res.render('content/createsurvey', { 
         title: 'Test',
         survey: sess.survey,
         username: req.user ? req.user.username : '' });
+}
+
+module.exports.ProcessCreateSurvey = (req, res)  => {
+    let sess = req.session;
+
+    if (sess.survey == null){
+        res.redirect('/createsurvey');
+    } else {
+        sess.survey.name = req.body['surveyName'];
+        
+        //Updating Survey in Session
+        for (let i = 0; i < sess.survey.questions.length; i++){
+            sess.survey.questions[i].question = req.body['q' + i];
+
+            if ( sess.survey.questions[i].category == 'mc'){
+                sess.survey.questions[i].options[0] = req.body['q' + i + 'o1']
+                sess.survey.questions[i].options[1] = req.body['q' + i + 'o2']
+                sess.survey.questions[i].options[2] = req.body['q' + i + 'o3']
+                sess.survey.questions[i].options[3] = req.body['q' + i + 'o4']
+            }
+        }
+
+        if (req.body.submitbutton == "Create"){
+            if (sess.survey.questions.length > 0){
+                survey.create(sess.survey, (err) => {
+                    if (err) {
+                        console.error(err);
+                        res.end(error);
+                    } else {
+                        //sess.survey = null;
+                        res.redirect('/');
+                    }
+                });
+            } else {
+
+            }
+        } else {
+            //Adding Questions to Survey
+            if (req.body.submitbutton == "Multiple Choice"){
+                sess.survey.questions.push({
+                    "category":  'mc',
+                    "question": '',
+                    "options": ['', '', '', '']
+                });
+            } else if (req.body.submitbutton == "True False"){
+                sess.survey.questions.push({
+                    "category":  'tf',
+                    "question": '',
+                    "options": ['True', 'False']
+                });
+            }   else if (req.body.submitbutton == "Short Answer"){
+                sess.survey.questions.push({
+                    "category":  'sa',
+                    "question": '',
+                    "options": ['']
+                });
+            }
+
+            //Remove Questions from the Survey
+            if (req.body.submitbutton == "Remove Last"){
+                sess.survey.questions.pop();
+            }
+
+            //console.log(sess.survey);
+
+            res.render('content/createsurvey', { 
+                title: 'Test',
+                survey: sess.survey,
+                username: req.user ? req.user.username : '' });
+        }
+    }    
 }
