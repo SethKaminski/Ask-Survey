@@ -35,12 +35,12 @@ router.get('/answer/:id', (req, res, next) => {
   }
 );
 
-router.get('/createsurvey', (req, res, next) => {
+router.get('/createsurvey', userController.RequireAuth,  (req, res, next) => {
     indexController.DisplayCreateSurvey(req, res);
   }
 );
 
-router.post('/createsurvey', (req, res, next) => {
+router.post('/createsurvey', userController.RequireAuth, (req, res, next) => {
     indexController.ProcessCreateSurvey(req, res);
   }
 );

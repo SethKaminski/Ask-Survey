@@ -2,7 +2,7 @@
         <div class="panel-body">
           <div class="col-md-2"></div>
           <div class="col-md-8">
-            <table>
+            <table class="table">
               <tr>
                 <th>Name</th>
                 <th>User</th>
@@ -13,8 +13,13 @@
                 <tr>
                   <td> <%=surveys[count].name %>  </td>
                   <td> <%=surveys[count].user_name %>  </td>
-                  <td> <a href="/do/<%=surveys[count]._id %>" role="button"> Do </a> </td>
-                  <td> <a href="/answer/<%=surveys[count]._id %>" role="button"> Answer </a> </td>
+
+                  <% if(username == surveys[count].user_name) { %>
+                        <td> <a href="/do/<%=surveys[count]._id %>" role="button"> Do </a> </td>
+                        <td> <a href="/answer/<%=surveys[count]._id %>" role="button"> Answers </a> </td>
+                    <% } else { %>
+                        <td> <a href="/do/<%=surveys[count]._id %>" role="button"> Do </a> </td>
+                    <% } %> 
                 </tr>
               <% } %>
             </table>

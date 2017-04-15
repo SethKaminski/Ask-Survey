@@ -25,7 +25,6 @@ module.exports.DisplaySurveys = (req, res)  => {
     });
 }
 
-//Done
 module.exports.DisplaySurvey = (req, res)  => {
     let id = req.params.id;
 
@@ -121,12 +120,21 @@ module.exports.DisplayAnswer = (req, res)  => {
         if (err) {
             console.error(err);
             res.end(error);
+        } else if (outAnswer == null) {
+            res.redirect('/surveys');
         } else {
-            let sess = req.session;
-            res.render('content/answerDisplay', {
-                title: 'Answer',
-                answer: outAnswer,
-                username: req.user ? req.user.username : '' });
+            survey.findById(id, (err, outSurvey) => {
+                if (err) {
+                    console.error(err);
+                    res.end(error);
+                } else {
+                    res.render('content/answerDisplay', {
+                        title: 'Answer-' + outSurvey.name,
+                        answer: outAnswer,
+                        survey: outSurvey,
+                        username: req.user ? req.user.username : '' });
+                }
+            });
         }
     });
 }
@@ -134,8 +142,8 @@ module.exports.DisplayAnswer = (req, res)  => {
 module.exports.DisplayCreateSurvey = (req, res)  => {
     let sess = req.session;
     sess.survey = new survey({
-        "user_id": 'String',
-        "user_name": 'String',
+        "user_id":  req.user._id,
+        "user_name":  req.user.username,
         "name": '',
         "questions": [] 
     });
@@ -143,7 +151,7 @@ module.exports.DisplayCreateSurvey = (req, res)  => {
     console.log(sess.survey);
 
     res.render('content/createsurvey', { 
-        title: 'Test',
+        title: 'Create Survey',
         survey: sess.survey,
         username: req.user ? req.user.username : '' });
 }
@@ -210,7 +218,7 @@ module.exports.ProcessCreateSurvey = (req, res)  => {
             }
 
             res.render('content/createsurvey', { 
-                title: 'Test',
+                title: 'Create Survey',
                 survey: sess.survey,
                 username: req.user ? req.user.username : '' });
         }
