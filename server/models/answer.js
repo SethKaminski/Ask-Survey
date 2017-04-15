@@ -2,6 +2,7 @@
 let mongoose = require("mongoose");
 
 let AnswerSchema = mongoose.Schema({
+  answered: Number,
   questions: [{ 
       category: String,
       answers: [String]

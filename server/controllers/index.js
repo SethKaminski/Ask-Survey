@@ -54,6 +54,7 @@ module.exports.ProcessSurvey = (req, res)  => {
         } else if (outAnswer == null) {
             let newAnswer = new answer({
                 "_id": id,
+                "answered": 1,
                 "questions": [] 
             });
 
@@ -85,12 +86,9 @@ module.exports.ProcessSurvey = (req, res)  => {
                 }
             });
         } else {
+            outAnswer.answered++;
             for (let i = 0; i < sess.survey.questions.length; i++){
                 let rb = req.body['q' + i];
-
-                console.log(rb);
-                console.log(outAnswer.questions[i]);
-                console.log(outAnswer.questions[i].answers);
 
                 if (sess.survey.questions[i].category == "mc"){
                     outAnswer.questions[i].answers[rb]++

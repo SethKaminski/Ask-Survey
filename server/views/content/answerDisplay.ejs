@@ -4,6 +4,8 @@
           <div class="col-md-8">
             <%= survey.name %>
 
+            Number of people that haved answered this survey:<%= answer.answered %>
+
             <% for (let count = 0; count < answer.questions.length; count++) { %>
               <br>
               Question <%= count +1  %>: <%= survey.questions[count].question %><br>
