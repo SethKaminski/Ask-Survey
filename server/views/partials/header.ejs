@@ -18,12 +18,18 @@
             <div class="container-fluid">
                 <img src="../../content/images/askLogo.png" alt="Ask Servey Logo" id="askImage">
                 <ul class="nav navbar-nav navbar-right"> 
-                <li 
-                        <% if(title == "Home") { %> class="active" <% } %>
-                    ><a href="/">Home</a></li>
                     <li 
-                        <% if(title == "Creat") { %> class="active" <% } %>
-                    ><a href="/creat">Create</a></li>    
+                    <% if(title == "Home") { %> class="active" <% } %>
+                    ><a href="/">Home</a></li>
+
+                    <li 
+                    <% if(title == "Surveys") { %> class="active" <% } %>
+                    ><a href="/surveys">Surveys</a></li>
+                    
+                    <li 
+                    <% if(title == "Create Survey") { %> class="active" <% } %>
+                    ><a href="/createsurvey">Create Survey</a></li>
+
                     <% if(username) { %>
                         <li class="navbar-text"> Welcome, <%= username %></li>
                         <li><a href="/user/logout"><span class="glyphicon glyphicon-log-out"></span> Logout </a></li>

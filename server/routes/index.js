@@ -20,22 +20,6 @@ router.get('/surveys', (req, res, next) => {
   }
 );
 
-/* GET creat page. */
-router.get('/creat', userController.RequireAuth, (req, res, next) => {
-    indexController.DisplayCreat(req, res);
-  }
-);
-
-router.post("/creat",  userController.RequireAuth, (req, res, next) => {
-    indexController.ProcessCreat(req, res);
-  }
-);
-
-router.post("/type-1",  userController.RequireAuth, (req, res, next) => {
-    indexController.ProcessType1(req, res);
-  }
-);
-
 router.get('/do/:id', (req, res, next) => {
     indexController.DisplaySurvey(req, res);
   }
@@ -43,6 +27,11 @@ router.get('/do/:id', (req, res, next) => {
 
 router.post('/do/:id', (req, res, next) => {
     indexController.ProcessSurvey(req, res);
+  }
+);
+
+router.get('/answer/:id', (req, res, next) => {
+    indexController.DisplayAnswer(req, res);
   }
 );
 

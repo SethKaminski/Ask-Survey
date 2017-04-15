@@ -1,26 +1,13 @@
 let mongoose = require('mongoose');
-let surveytype1 = require('../models/surveytype1');
-let answertype1 = require('../models/answertype1');
 
 let survey = require('../models/survey');
+let answer = require('../models/answer');
+
 
 
 module.exports.DisplayHome = (req, res)  => {
     res.render('content/index', { 
         title: 'Home',
-        username: req.user ? req.user.username : '' });
-}
-
-module.exports.DisplayCreat = (req, res)  => {
-    res.render('content/survey-type', { 
-        title: 'Creat',
-        username: req.user ? req.user.username : '' });
-}
-
-module.exports.ProcessCreat = (req, res)  => {
-    res.render('content/type-1', { 
-        title: 'Creat',
-        surveyName: req.body.surveyName,
         username: req.user ? req.user.username : '' });
 }
 
@@ -38,101 +25,59 @@ module.exports.DisplaySurveys = (req, res)  => {
     });
 }
 
-module.exports.ProcessType1 = (req, res)  => {
-    let newType1 = new surveytype1({
-        "user_id": "String",
-        "user_name": "String",
-        "name": req.body.surveyName,
-        "type": "type1",
-        "question1": { 
-            "question": req.body.q1,
-            "Option1": req.body.q1o1,
-            "Option2": req.body.q1o2,
-            "Option3": req.body.q1o3,
-            "Option4": req.body.q1o4,
-            },
-        "question2": { 
-            "question": req.body.q2,
-            "Option1": req.body.q2o1,
-            "Option2": req.body.q2o2,
-            "Option3": req.body.q2o3,
-            "Option4": req.body.q2o4,
-            },
-        "question3": { 
-            "question": req.body.q3,
-            "Option1": req.body.q3o1,
-            "Option2": req.body.q3o2,
-            "Option3": req.body.q3o3,
-            "Option4": req.body.q3o4,
-            },
-        "question4": { 
-            "question": req.body.q4,
-            "Option1": req.body.q4o1,
-            "Option2": req.body.q4o2,
-            "Option3": req.body.q4o3,
-            "Option4": req.body.q4o4,
-            },
-        "question5": { 
-            "question": req.body.q5,
-            "Option1": req.body.q5o1,
-            "Option2": req.body.q5o2,
-            "Option3": req.body.q5o3,
-            "Option4": req.body.q5o4,
-            },
-    });
-
-    surveytype1.create(newType1, (err) => {
-        if (err) {
-            console.error(err);
-            res.end(error);
-        } else {
-            res.redirect('/')
-        }
-    });
-}
-
+//Done
 module.exports.DisplaySurvey = (req, res)  => {
     let id = req.params.id;
 
-    surveytype1.findById(id, (err, survey) => {
+    survey.findById(id, (err, outSurvey) => {
         if (err) {
             console.error(err);
             res.end(error);
         } else {
-            res.render('content/dotype1', {
-                title: 'Survey ' + survey.name,
-                survey: survey,
+            let sess = req.session;
+            sess.survey = outSurvey
+            res.render('content/dosurvey', {
+                title: 'Survey ' + outSurvey.name,
+                survey: outSurvey,
                 username: req.user ? req.user.username : '' });
         }
     });
 }
 
 module.exports.ProcessSurvey = (req, res)  => {
+    let sess = req.session;
     let id = req.params.id;
 
-  
-
-    answertype1.findById(id, (err, answer) => {
+    answer.findById(id, (err, outAnswer) => {
         if (err) {
             console.error(err);
             res.end(error);
-        } else if (answer == null) {
-            let newType1 = new answertype1({
+        } else if (outAnswer == null) {
+            let newAnswer = new answer({
                 "_id": id,
-                "q1answer": ['0','0','0','0'],
-                "q2answer": ['0','0','0','0'],
-                "q3answer": ['0','0','0','0'],
-                "q4answer": ['0','0','0','0'],
-                "q5answer": ['0','0','0','0']
+                "questions": [] 
             });
 
-            newType1.q1answer[req.body.q1 -1] = 1;
-            newType1.q3answer[req.body.q2 -1] = 1;
-            newType1.q4answer[req.body.q3 -1] = 1;
-            newType1.q5answer[req.body.q4 -1] = 1;
-            newType1.q2answer[req.body.q5 -1] = 1;
+            for (let i = 0; i < sess.survey.questions.length; i++){
+                newAnswer.questions.push({
+                    "category": sess.survey.questions[i].category,
+                    "answers": []
+                })
 
-            answertype1.create(newType1, (err) => {
+                if (sess.survey.questions[i].category == "mc"){
+                    newAnswer.questions[i].answers = [0, 0, 0, 0];
+                    newAnswer.questions[i].answers[req.body['q' + i]]++
+                } else if (sess.survey.questions[i].category == "tf"){
+                    newAnswer.questions[i].answers = [0, 0];
+                    newAnswer.questions[i].answers[req.body['q' + i]]++
+                } else if (sess.survey.questions[i].category == "sa"){
+                    newAnswer.questions[i].answers.push(req.body['q' + i]);
+                }
+
+                console.log(newAnswer.questions[i].answers);
+            }            
+
+            answer.create(newAnswer, (err) => {
                 if (err) {
                     console.error(err);
                     res.end(error);
@@ -141,13 +86,23 @@ module.exports.ProcessSurvey = (req, res)  => {
                 }
             });
         } else {
-            answer.q1answer[req.body.q1 -1]++;
-            answer.q3answer[req.body.q2 -1]++;
-            answer.q4answer[req.body.q3 -1]++;
-            answer.q5answer[req.body.q4 -1]++;
-            answer.q2answer[req.body.q5 -1]++;
+            for (let i = 0; i < sess.survey.questions.length; i++){
+                let rb = req.body['q' + i];
 
-            answertype1.update({_id: id}, answer, (err) => {
+                console.log(rb);
+                console.log(outAnswer.questions[i]);
+                console.log(outAnswer.questions[i].answers);
+
+                if (sess.survey.questions[i].category == "mc"){
+                    outAnswer.questions[i].answers[rb]++
+                } else if (sess.survey.questions[i].category == "tf"){
+                    outAnswer.questions[i].answers[rb]++
+                } else if (sess.survey.questions[i].category == "sa"){
+                    outAnswer.questions[i].answers.push(rb);
+                }
+            }
+
+            answer.update({_id: id}, outAnswer, (err) => {
                 if (err) {
                     console.error(err);
                     res.end(error);
@@ -155,6 +110,23 @@ module.exports.ProcessSurvey = (req, res)  => {
                    res.redirect('/');
                 }
             });
+        }
+    });
+}
+
+module.exports.DisplayAnswer = (req, res)  => {
+    let id = req.params.id;
+
+    answer.findById(id, (err, outAnswer) => {
+        if (err) {
+            console.error(err);
+            res.end(error);
+        } else {
+            let sess = req.session;
+            res.render('content/answerDisplay', {
+                title: 'Answer',
+                answer: outAnswer,
+                username: req.user ? req.user.username : '' });
         }
     });
 }
@@ -203,7 +175,7 @@ module.exports.ProcessCreateSurvey = (req, res)  => {
                         console.error(err);
                         res.end(error);
                     } else {
-                        //sess.survey = null;
+                        sess.survey = null;
                         res.redirect('/');
                     }
                 });
@@ -236,8 +208,6 @@ module.exports.ProcessCreateSurvey = (req, res)  => {
             if (req.body.submitbutton == "Remove Last"){
                 sess.survey.questions.pop();
             }
-
-            //console.log(sess.survey);
 
             res.render('content/createsurvey', { 
                 title: 'Test',

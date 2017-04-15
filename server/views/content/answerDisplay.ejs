@@ -1,0 +1,21 @@
+<% include ../partials/header.ejs %>
+        <div class="panel-body">
+          <div class="col-md-2"></div>
+          <div class="col-md-8">
+
+            <% for (let count = 0; count < answer.questions.length; count++) { %>
+              <br>
+              <%= answer.questions[count].answers[0] %> <br>
+                
+              <% if(answer.questions[count].category == "mc" || answer.questions[count].category == "tf") { %>
+                <%= answer.questions[count].answers[1] %> <br>
+              <% } %>
+
+              <% if(answer.questions[count].category == "mc") { %>
+                <%= answer.questions[count].answers[2] %> <br>
+                <%= answer.questions[count].answers[3] %> <br>
+              <% } %>
+            <% } %>
+          </div>
+        </div>
+<% include ../partials/footer.ejs %> 
